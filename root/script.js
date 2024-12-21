@@ -1,14 +1,30 @@
 document.getElementById('plant-form').addEventListener('submit', async (event) => {
     event.preventDefault();
 
-    const plantName = document.getElementById('plant-name').value;
+    const formData = new FormData();
+    const imageFile = document.getElementById('plant-image').files[0];
+    formData.append('image', imageFile);
 
-    const response = await fetch('/search', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ plantName }),
-    });
+    try {
+        const response = await fetch('/plant', {
+            method: 'POST',
+            body: formData,
+        });
 
-    const data = await response.json();
-    document.getElementById('result').innerText = JSON.stringify(data, null, 2);
+        if (response.ok) {
+            const data = await response.json();
+            console.log('Fetched Data:', data);
+
+            if (data.message) {
+                document.getElementById('result').innerText = data.message;
+            } else {
+                document.getElementById('result').innerText = JSON.stringify(data, null, 2);
+            }
+        } else {
+            document.getElementById('result').innerText = 'Error fetching data from the server.';
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        document.getElementById('result').innerText = 'An error occurred during the fetch request.';
+    }
 });

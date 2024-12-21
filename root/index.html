@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prathak</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <h1>Welcome to Prathak</h1>
-    <form id="plant-form">
-        <input type="text" id="plant-name" placeholder="Enter Plant Name" required>
+    <form id="plant-form" enctype="multipart/form-data">
+        <input type="file" id="plant-image" name="image" accept="image/*" required>
         <button type="submit">Search</button>
     </form>
     <div id="result"></div>
