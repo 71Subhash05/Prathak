@@ -12,36 +12,38 @@ app.use(express.static('public'));
 
 // Endpoint to handle image uploads and send to PlantNet API
 app.post('/plant', upload.single('image'), async (req, res) => {
-  const file = req.file; // Get the uploaded file
-  const apiKey = '2b10AkOcfrRqw7H6bHKHHchZIO';
-  const apiURL = 'https://my.plantnet.org/v2/identify?api-key=${apiKey}&organs=flower';
+    const file = req.file; // Get the uploaded file
+    const apiKey = '2b10AkOcfrRqw7H6bHKHHchZIO';
+    const apiURL = `https://my.plantnet.org/v2/identify?api-key=${apiKey}&organs=flower`;
 
-  try {
-    const formData = new FormData();
-    formData.append('images', fs.createReadStream(file.path));
+    try {
+        const formData = new FormData();
+        formData.append('images', fs.createReadStream(file.path));
 
-    const response = await fetch(apiURL, {
-      method: 'POST',
-      body: formData,
-    });
+        const response = await fetch(apiURL, {
+            method: 'POST',
+            body: formData,
+        });
 
-    const data = await response.json();
+        const data = await response.json();
 
-    // Clean up uploaded file
-    fs.unlinkSync(file.path);
+        // Clean up uploaded file
+        fs.unlinkSync(file.path);
 
-    if (data && data.results && data.results.length > 0) {
-      res.json(data.results[0]); // Send the first result back to the client
-    } else {
-      res.json({ message: 'No plants found' });
+        if (data && data.results && data.results.length > 0) {
+            res.json(data.results[0]); // Send the first result back to the client
+        } else {
+            res.json({ message: 'No plants found' });
+        }
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        res.status(500).json({ message: 'Error fetching plant data', error: error.message });
     }
-  } catch (error) {
-    console.error('Error fetching data:', error);
-    res.status(500).json({ message: 'Error fetching plant data', error: error.message });
-  }
 });
 
 // Start the server
 app.listen(port, () => {
-  console.log('Server running on http://localhost:3001');
+    console.log('Server running on http://localhost:3001');
 });
+
+
