@@ -14,7 +14,7 @@ app.use(express.static('public'));
 app.post('/plant', upload.single('image'), async (req, res) => {
     const file = req.file; // Get the uploaded file
     const apiKey = '2b10AkOcfrRqw7H6bHKHHchZIO';
-    const apiURL = `https://my.plantnet.org/v2/identify?api-key=${apiKey}&organs=flower`;
+    const apiURL = `https://my.plantnet.org/v2/identify/${apiKey}?organs=flower`;
 
     try {
         const formData = new FormData();
@@ -38,12 +38,3 @@ app.post('/plant', upload.single('image'), async (req, res) => {
     } catch (error) {
         console.error('Error fetching data:', error);
         res.status(500).json({ message: 'Error fetching plant data', error: error.message });
-    }
-});
-
-// Start the server
-app.listen(port, () => {
-    console.log('Server running on http://localhost:3001');
-});
-
-
