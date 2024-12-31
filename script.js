@@ -25,6 +25,4 @@ document.getElementById('plant-form').addEventListener('submit', async (event) =
         }
     } catch (error) {
         console.error('Error:', error);
-        document.getElementById('result').innerText = 'An error occurred during the fetch request.';
-    }
-});
+        document.getElementById('result').innerText = 'An error occurred during the fetch
